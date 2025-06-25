@@ -37,6 +37,6 @@ steps:
     resourceGroupName: 'Demo-RG'
     location: 'East US 2'
     templateLocation: 'Linked artifact'
-    csmFile: 'templates/azuredeploy.json'
-    csmParametersFile: 'templates/azuredeploy.parameters.json'
+    csmFile: 'AzureResourceGroupSQLServer/azuredeploy.json'
+    csmParametersFile: 'AzureResourceGroupSQLServer/azuredeploy.parameters.json'
     deploymentMode: 'Incremental'
