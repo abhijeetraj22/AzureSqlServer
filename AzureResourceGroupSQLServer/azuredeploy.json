@@ -19,7 +19,7 @@
     {
       "type": "Microsoft.Sql/servers",
       "apiVersion": "2022-02-01-preview",
-      "name": "server0",
+      "name": "SQL-Server2",
       "location": "[resourceGroup().location]",
       "properties": {
         "administratorLogin": "[parameters('SQLLogin')]",
@@ -29,7 +29,7 @@
     {
       "type": "Microsoft.Sql/servers/databases",
       "apiVersion": "2022-02-01-preview",
-      "name": "[format('{0}/{1}','server0','db0')]",
+      "name": "[format('{0}/{1}','SQL-Server2','sqldb2')]",
       "location": "[resourceGroup().location]",
       "sku": {
         "name": "Basic",
@@ -37,7 +37,7 @@
       },
       "properties": {},
       "dependsOn": [
-        "[resourceID('Microsoft.Sql/servers','server0')]"
+        "[resourceID('Microsoft.Sql/servers','SQL-Server2')]"
       ]
     }
   ]
