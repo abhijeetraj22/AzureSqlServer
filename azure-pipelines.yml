@@ -28,3 +28,16 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'Azure subscription pay(1)(a34126dd-92cf-4a2c-bc40-4204b17871ff)'
+    subscriptionId: 'a34126dd-92cf-4a2c-bc40-4204b17871ff'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'Demo-RG'
+    location: 'East US 2'
+    templateLocation: 'Linked artifact'
+    csmFile: 'SQL'
+    csmParametersFile: 'SQLpara'
+    deploymentMode: 'Incremental'
+
