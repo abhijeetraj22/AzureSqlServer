@@ -37,7 +37,6 @@ steps:
     resourceGroupName: 'Demo-RG'
     location: 'East US 2'
     templateLocation: 'Linked artifact'
-    csmFile: 'SQL'
-    csmParametersFile: 'SQLpara'
+    csmFile: 'templates/azuredeploy.json'
+    csmParametersFile: 'templates/azuredeploy.parameters.json'
     deploymentMode: 'Incremental'
-
