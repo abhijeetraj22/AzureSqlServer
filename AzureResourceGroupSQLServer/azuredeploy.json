@@ -1,0 +1,44 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "SQLLogin": {
+      "type": "String",
+      "metadata": {
+        "description": "the adminstrator user name"
+      }
+    },
+    "SQLPassword": {
+      "type": "secureString",
+      "metadata": {
+        "description": "the administrator password"
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Sql/servers",
+      "apiVersion": "2022-02-01-preview",
+      "name": "server0",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "administratorLogin": "[parameters('SQLLogin')]",
+        "administratorLoginPassword": "[parameters('SQLPassword')]"
+      }
+    },
+    {
+      "type": "Microsoft.Sql/servers/databases",
+      "apiVersion": "2022-02-01-preview",
+      "name": "[format('{0}/{1}','server0','db0')]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Basic",
+        "tier": "Basic"
+      },
+      "properties": {},
+      "dependsOn": [
+        "[resourceID('Microsoft.Sql/servers','server0')]"
+      ]
+    }
+  ]
+}
