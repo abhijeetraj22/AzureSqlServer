@@ -1,0 +1,48 @@
+name: Build and Deploy ASP.NET Framework App
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    env:
+      BUILD_CONFIGURATION: Release
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1
+
+    - name: Restore NuGet packages
+      run: nuget restore "**/*.sln"
+
+    - name: Build Solution
+      run: msbuild "**/*.sln" /p:Configuration=Release /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="${{ github.workspace }}\\WebApp.zip" /p:DeployIisAppPath="Default Web Site"
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy ARM template
+      run: |
+        az deployment group create \
+          --resource-group Demo-RG \
+          --template-file AzureResourceGroupSQLServer/azuredeploy.json \
+          --parameters AzureResourceGroupSQLServer/azuredeploy.parameters.json \
+          --mode Incremental
